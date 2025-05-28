@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schützenverein Kleineibstadt e.V.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for animations and effects */
+        .hero-container {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+        
+        .hero-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            transition: filter 0.5s ease;
+        }
+        
+        .content-section {
+            position: relative;
+            min-height: 100vh;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .blurred .hero-image {
+            filter: blur(5px) brightness(0.7);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #10b981;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .floating-btn {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .event-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-item {
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Gallery Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .lightbox-prev {
+            left: 2rem;
+        }
+
+        .lightbox-next {
+            right: 2rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Contact section with transparent background */
+        #contact {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Events section with same transparent background */
+        #events {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Past event colors */
+        .past-event-1 {
+            background-color: #6b7280;
+        }
+
+        .past-event-2 {
+            background-color: #4b5563;
+        }
+
+        .past-event-3 {
+            background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header with Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="SV-Logo-neu.jpg" alt="Vereinslogo" class="h-12 mr-3">
+                <h1 class="text-xl font-bold text-gray-800">Schützenverein <span class="text-green-600">Kleineibstadt</span> e.V.</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="nav-link text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+            </nav>
+            
+            <button class="md:hidden text-gray-700" id="mobile-menu-button">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white w-full py-4 px-4 shadow-lg" id="mobile-menu">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="hero-container">
+            <div class="hero-image" style="background-image: url('Backroundimage.jpg')"></div>
+            
+            <div class="flex flex-col justify-center items-center h-full text-center px-4">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg">Willkommen beim Schützenverein Kleineibstadt</h1>
+                <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl drop-shadow-md">platzhaltertext</p>
+                <a href="#content" class="bg-white text-green-600 hover:bg-green-600 hover:text-white px-8 py-3 rounded-full text-lg font-semibold transition duration-300 transform hover:scale-105 shadow-lg">
+                    Mehr erfahren
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Über unseren Verein</h2>
+            
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <img src="1000029301.jpg" alt="Vereinsmitglieder" class="rounded-lg shadow-xl w-full">
+                </div>
+                
+                <div class="md:w-1/2">
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Tradition seit 1906</h3>
+                    <p class="text-gray-600 mb-4">Platzhaltertext</p>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-xl font-semibold mb-2 text-gray-800">Was uns Wichtig ist</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <span class="text-gray-600">Gemeinschaft</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <span class="text-gray-600">Tradition</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <span class="text-gray-600">Sportlicher Wettkampf</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-600 mt-1 mr-2"></i>
+                                <span class="text-gray-600">Gesellschaftliches Engagement</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <a href="#events" class="inline-block bg-gray-800 hover:bg-green-800 text-white font-medium py-2 px-6 rounded transition duration-300">Unsere Aktivitäten</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Termine & Veranstaltungen</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Event 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card">
+                    <div class="h-48 bg-yellow-500 flex items-center justify-center text-white">
+                        <span class="text-4xl font-bold">JUN</span>
+                        <span class="text-6xl font-bold mx-2">24</span>
+                        <span class="text-xl">2025</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Schützenfest</h3>
+                        <p class="text-gray-600 mb-4">Unser jährliches Schützenfest mit Königsschießen</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>14:00 - 20:00 Uhr</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>Schützenhaus, Kleineibstadt</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-medium hover:underline">Mehr Details</a>
+                    </div>
+                </div>
+                
+                <!-- Event 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card">
+                    <div class="h-48 bg-green-800 flex items-center justify-center text-white">
+                        <span class="text-4xl font-bold">MAI</span>
+                        <span class="text-6xl font-bold mx-2">13</span>
+                        <span class="text-xl">2025</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Wirtschaftsdienst</h3>
+                        <p class="text-gray-600 mb-4">Ab 20:00 uhr, Aufsicht Rainer Hesselbach</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>20:00 - 22:00 Uhr</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>Wirtschaft, Kleineibstadt</span>
+                        </div>
+                        <a href="Wirtschaftsdienst-03.06-11.10.pdf" download="Wirtschaftsdienst-03.06-11.10.pdf" class="inline-block bg-gray-800 hover:bg-green-800 text-white font-medium py-2 px-4 rounded transition duration-300 mt-2">
+                            <i class="fas fa-download mr-2"></i>Wirtschaftsdienstplan herunterladen
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Event 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card">
+                    <div class="h-48 bg-yellow-500 flex items-center justify-center text-white">
+                        <span class="text-4xl font-bold">AUG</span>
+                        <span class="text-6xl font-bold mx-2">05</span>
+                        <span class="text-xl">2023</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Tag der offenen Tür</h3>
+                        <p class="text-gray-600 mb-4">Kommen Sie vorbei und lernen Sie unseren Verein kennen. Angeboten werden Blasrohre, Luft- und Lichtgewehre.</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>11:00 - 16:00 Uhr</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>Schützenhaus, Kleineibstadt</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-medium hover:underline">Mehr Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block bg-gray-800 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                    Alle kommenden Termine anzeigen
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Events Section -->
+    <section id="past-events" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Vergangene Events</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Past Event 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card border border-gray-200">
+                    <div class="h-48 past-event-1 flex items-center justify-center text-white relative">
+                        <span class="text-4xl font-bold">OKT</span>
+                        <span class="text-6xl font-bold mx-2">15</span>
+                        <span class="text-xl">2023</span>
+                        <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            Vergangen
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Herbstschießen</h3>
+                        <p class="text-gray-600 mb-4">Unser traditionelles Herbstschießen mit vielen Teilnehmern</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-trophy mr-2"></i>
+                            <span>König: Max Mustermann</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>32 Teilnehmer</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-medium hover:underline">Bilder ansehen</a>
+                    </div>
+                </div>
+                
+                <!-- Past Event 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card border border-gray-200">
+                    <div class="h-48 past-event-2 flex items-center justify-center text-white relative">
+                        <span class="text-4xl font-bold">JUL</span>
+                        <span class="text-6xl font-bold mx-2">22</span>
+                        <span class="text-xl">2023</span>
+                        <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            Vergangen
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Sommerfest</h3>
+                        <p class="text-gray-600 mb-4">Gemütliches Beisammensein mit Grillen und Musik</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-utensils mr-2"></i>
+                            <span>Grillbuffet & Getränke</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-music mr-2"></i>
+                            <span>Live-Musik</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-medium hover:underline">Bilder ansehen</a>
+                    </div>
+                </div>
+                
+                <!-- Past Event 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden event-card border border-gray-200">
+                    <div class="h-48 past-event-3 flex items-center justify-center text-white relative">
+                        <span class="text-4xl font-bold">DEZ</span>
+                        <span class="text-6xl font-bold mx-2">10</span>
+                        <span class="text-xl">2022</span>
+                        <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            Vergangen
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Weihnachtsschießen</h3>
+                        <p class="text-gray-600 mb-4">Besinnliches Schießen mit Glühwein and Plätzchen</p>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-star mr-2"></i>
+                            <span>Besondere Preise</span>
+                        </div>
+                        <div class="flex items-center text-gray-500 mb-4">
+                            <i class="fas fa-user-friends mr-2"></i>
+                            <span>Familien willkommen</span>
+                        </div>
+                        <a href="#" class="text-green-600 font-medium hover:underline">Bilder ansehen</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block bg-gray-800 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                    Alle vergangenen Events anzeigen
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Galerie</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Gallery Items -->
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(0)">
+                    <img src="1000029303.jpg" alt="Schützenfest" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(1)">
+                    <img src="Screenshot 2025-05-28 123259.png" alt="Schießstand" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(2)">
+                    <img src="Bild_2025-05-28 123432297.png" alt="Vereinsabend" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(3)">
+                    <img src="SV.jpg" alt="Training" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(4)">
+                    <img src="IMG-20250505-WA0063.jpg" alt="Jugendgruppe" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(5)">
+                    <img src="1000029299.jpg" alt="Pokale" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(6)">
+                    <img src="übergabe schützrnkönig.jpg" alt="Festumzug" class="w-full h-48 object-cover">
+                </div>
+                <div class="gallery-item rounded-lg overflow-hidden shadow-md" onclick="openLightbox(8)">
+                    <img src="Backroundimage.jpg" alt="Platzhalter" class="w-full h-48 object-cover">
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button onclick="openLightbox(0)" class="inline-block bg-gray-800 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                    Vollständige Galerie ansehen
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <span class="lightbox-nav lightbox-prev" onclick="changeImage(-1)">&#10094;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-img" class="lightbox-img" src="">
+        </div>
+        <span class="lightbox-nav lightbox-next" onclick="changeImage(1)">&#10095;</span>
+        <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Kontakt & Mitgliedschaft</h2>
+            
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/2 bg-white p-8 rounded-lg shadow-md">
+                    <form action="https://formsubmit.co/henry.ramirez.koen@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="Neue Kontaktanfrage vom Schützenverein">
+                        <input type="hidden" name="_next" value="https://yourwebsite.com/thank-you.html">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Kontaktformular</h3>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 mb-2">E-Mail</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="subject" class="block text-gray-700 mb-2">Betreff</label>
+                            <select id="subject" name="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600">
+                                <option>Allgemeine Anfrage</option>
+                                <option>Mitgliedschaft</option>
+                                <option>Terminanfrage</option>
+                                <option>Sonstiges</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 mb-2">Nachricht</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600" required></textarea>
+                        </div>
+                        <button type="submit" class="bg-gray-800 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg w-full transition duration-300">Nachricht senden</button>
+                    </form>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-white p-8 rounded-lg shadow-md mb-8">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Mitglied werden</h3>
+                        <p class="text-gray-600 mb-6">Interessieren Sie sich für eine Mitgliedschaft in unserem Schützenverein? Wir freuen uns über neue Mitglieder jeden Alters!</p>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-3 text-gray-800">Vorteile einer Mitgliedschaft:</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                    <span class="text-gray-600">Zugang zu unseren Schießständen und Trainingsmöglichkeiten</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                    <span class="text-gray-600">Teilnahme am Kleinkaliberschießen und Wettkämpfen</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                    <span class="text-gray-600">Gesellige Veranstaltungen und Gemeinschaftserlebnisse</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                    <span class="text-gray-600">Förderung der Konzentration und Talente von Jugendlichen</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <a href="Einverständniserklärung_250522_071113.pdf"
+                          download="Einverständniserklärung_250522_071113.pdf"
+                          class="inline-block bg-gray-800 hover:bg-green-800 text-white font-bold py-3 px-6 mb-4 rounded-lg transition duration-300">
+                          <i class="fas fa-download mr-2"></i>Einverständnisserklärung herunterladen
+                        </a>
+                        <a href="Beitrittserklärung SV-Kleineibsadt_250522_071102.pdf" 
+                          download="Beitrittserklärung SV-Kleineibsadt_250522_071102.pdf" 
+                          class="inline-block bg-gray-800 hover:bg-green-800 text-white font-bold py-3 px-6 mb-4 rounded-lg transition duration-300">
+                          <i class="fas fa-download mr-2"></i>Beitrittserklärung herunterladen
+                        </a>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">Kontaktdaten</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-green-600 mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Adresse</h4>
+                                    <p class="text-gray-600">Münsterstaße 10<br>97633, Großeibstadt</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope text-green-600 mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">E-Mail</h4>
+                                    <p class="text-gray-600">richtermichael1985@icloud.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-phone-alt text-green-600 mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Telefon</h4>
+                                    <p class="text-gray-600">Michael Richter 0173 4450006</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-clock text-green-600 mt-1 mr-4 text-xl"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Zeiten Training</h4>
+                                    <p class="text-gray-600">Mittwochs<br>19:00 - 21:00 Uhr</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Schützenverein Kleineibstadt</h3>
+                    <p class="text-gray-400">Tradition ∙ Gemeinschaft ∙ Sport seit 1906</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300">Startseite</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300">Über uns</a></li>
+                        <li><a href="#events" class="text-gray-400 hover:text-white transition duration-300">Termine</a></li>
+                        <li><a href="#past-events" class="text-gray-400 hover:text-white transition duration-300">Vergangene Events</a></li>
+                        <li><a href="#gallery" class="text-gray-400 hover:text-white transition duration-300">Galerie</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Rechtliches</h4>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="Dokument.pdf" download="Impressum.pdf" class="text-gray-400 hover:text-white transition duration-300">Impressum</a>
+                        </li>
+                        <li>
+                            <a href="Dokument 1.pdf" download="Datenschutz.pdf" class="text-gray-400 hover:text-white transition duration-300">Datenschutz</a>
+                        </li>
+                        <li>
+                            <a href="satzung.pdf" download="Satzung.pdf" class="text-gray-400 hover:text-white transition duration-300">Satzung</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Social Media</h4>
+                    <div class="flex space-x-4">
+                        <!-- Instagram Button -->
+                        <a href="https://www.instagram.com/sv_Kleineibstadt/" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center justify-center px-4 py-2 rounded-full text-white font-bold text-lg bg-gray-700 hover:bg-gray-600">
+                            <i class="fab fa-instagram text-2xl mr-3"></i>
+                            Folge uns
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Schützenverein Kleineibstadt e.V. - Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Contact Button -->
+    <a href="#contact" class="fixed bottom-8 right-8 bg-yellow-500 text-white p-4 rounded-full shadow-xl floating-btn">
+        <i class="fas fa-envelope text-2xl"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="fixed bottom-8 left-8 bg-green-800 text-white p-4 rounded-full shadow-xl hidden md:block" id="back-to-top">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </a>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Back to Top Button
+        window.addEventListener('scroll', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('opacity-100');
+                backToTopButton.classList.remove('opacity-0');
+            } else {
+                backToTopButton.classList.add('opacity-0');
+                backToTopButton.classList.remove('opacity-100');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Simple form validation
+        const contactForm = document.querySelector('form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                
+                if (name && email && message) {
+                    alert('Vielen Dank für Ihre Nachricht! Wir werden uns vielleicht bald bei Ihnen melden ;)');
+                    this.reset();
+                } else {
+                    alert('Bitte füllen Sie alle Pflichtfelder aus.');
+                }
+            });
+        }
+
+        // Gallery Lightbox functionality
+        const galleryImages = [
+            "1000029303.jpg",
+            "1000029304.jpg",
+            "Christbaumkugelschießen.jpg",
+            "SV.jpg",
+            "IMG-20250505-WA0063.jpg",
+            "1000029299.jpg",
+            "übergabe schützrnkönig.jpg",
+            "Backroundimage.jpg"
+        ];
+
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            
+            lightboxImg.src = galleryImages[currentImageIndex];
+            lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeImage(step) {
+            currentImageIndex += step;
+            
+            // Wrap around if at beginning or end
+            if (currentImageIndex >= galleryImages.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = galleryImages.length - 1;
+            }
+            
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            
+            lightboxImg.src = galleryImages[currentImageIndex];
+            lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+        }
+
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowRight') {
+                    changeImage(1);
+                } else if (e.key === 'ArrowLeft') {
+                    changeImage(-1);
+                }
+            }
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=Joel-Ramirez-github/sv-kleineibstadt-space" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
