@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schützenverein Kleineibstadt e.V.</title>
+    <link rel="icon" type="image/x-icon" href="SV-Logo-neu.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header with Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="SV-Logo-neu.jpg" alt="Vereinslogo" class="h-12 mr-3">
+                <h1 class="text-xl font-bold text-gray-800">Schützenverein <span class="text-green-600">Kleineibstadt</span> e.V.</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="nav-link text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+            </nav>
+            
+            <button class="md:hidden text-gray-700" id="mobile-menu-button">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white w-full py-4 px-4 shadow-lg" id="mobile-menu">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+            </div>
+        </div>
+    </header>
+<!-- PDF anzeigen -->
+            <object data="Schützenverein Kleineibstadt.pdf" 
+                    type="application/pdf" 
+                    width="100%" 
+                    height="800px">
+            </object>
+</body>
