@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schützenverein Kleineibstadt e.V.</title>
+    <link rel="icon" type="image/x-icon" href="SV-Logo-neu.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for animations and effects */
+        .hero-container {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+        }
+        
+        .hero-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            transition: filter 0.5s ease;
+        }
+        
+        .content-section {
+            position: relative;
+            min-height: 100vh;
+            background-color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .blurred .hero-image {
+            filter: blur(5px) brightness(0.7);
+        }
+        
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #10b981;
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .floating-btn {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .event-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-item {
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Gallery Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .lightbox-prev {
+            left: 2rem;
+        }
+
+        .lightbox-next {
+            right: 2rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Contact section with transparent background */
+        #contact {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Events section with same transparent background */
+        #events {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Past event colors */
+        .past-event-1 {
+            background-color: #6b7280;
+        }
+
+        .past-event-2 {
+            background-color: #4b5563;
+        }
+
+        .past-event-3 {
+            background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header with Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="SV-Logo-neu.jpg" alt="Vereinslogo" class="h-12 mr-3">
+                <h1 class="text-xl font-bold text-gray-800">Schützenverein <span class="text-green-600">Kleineibstadt</span> e.V.</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="nav-link text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="nav-link text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+                <a href="sv-kleineibstadt/sponsoren" class="nav-link text-gray-700 hover:text-green-600 font-medium">Sponsoren</a> 
+            </nav>
+            
+            <button class="md:hidden text-gray-700" id="mobile-menu-button">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white w-full py-4 px-4 shadow-lg" id="mobile-menu">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-green-600 font-medium">Start</a>
+                <a href="#about" class="text-gray-700 hover:text-green-600 font-medium">Über uns</a>
+                <a href="#events" class="text-gray-700 hover:text-green-600 font-medium">Termine</a>
+                <a href="#past-events" class="text-gray-700 hover:text-green-600 font-medium">Vergangene Events</a>
+                <a href="#gallery" class="text-gray-700 hover:text-green-600 font-medium">Galerie</a>
+                <a href="#contact" class="text-gray-700 hover:text-green-600 font-medium">Kontakt</a>
+                <a href="sv-kleineibstadt/sponsoren" class="text-gray-700 hover:text-green-600 font-medium">Sponsoren</a> 
+            </div>
+        </div>
+    </header>
+    <!-- Sponsoren-Section -->
+   <section id="sponsoren" class="py-16 bg-white"> 
+     <div class="containermx-auto px-4">
+       <h2 text-3xl font-bold text-center mb-12 text-gray-800>Unsere Sponsoren</h2>
+       <div class="flex flex-col md:flex-row items-center gap-8">
+         <div class="md:w-1/2"> 
+         <img scr="" alt="Gespendete Sachen" class="rounded-lg shadow-xl w-full" >
+         </div>
+         <div class="md:w-1/2"> 
+           <h3 class="text-2xl font-semibold mb-4 text-gray-800">Über die Spenden</h3>
+          <p class="text-gray-600">Wir haben von unseren sponsoren folgendes bekommen</p>
+           <ul class="space-y-2">
+             <li>2 neue Paar Schießschuhe</li>
+             <li>ein neues Lichtgewehr</li>
+             <li>2 neue Schießjacken</li>
+           </ul>
+           <h3 class="text-2xl font-semibold mb-4 text-gray-800">Unsere Sponsoren</h3>
+           <ul class="space-y-2">
+             <li>VR-Bank</li>
+             <li>Sparkasse</li>
+             <li>Privater Sponsor</li>
+           </ul>
+       </div>
+     </div>
+   </section>
